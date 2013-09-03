@@ -1,9 +1,6 @@
 package boolmap
 
-import (
-	// 	"fmt"
-	"testing"
-)
+import "testing"
 
 func TestBoolMap(t *testing.T) {
 	m := NewMap()
