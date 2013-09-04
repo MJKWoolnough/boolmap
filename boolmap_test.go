@@ -5,18 +5,18 @@ import "testing"
 func TestBoolMap(t *testing.T) {
 	m := NewMap()
 	tests := []struct {
-		position    uint64
+		position    uint
 		value       bool
-		mapPosition uint64
-		mapValue    uint64
+		mapPosition uint
+		mapValue    byte
 	}{
 		{0, true, 0, 1},
 		{1, true, 0, 3},
 		{2, true, 0, 7},
-		{63, true, 0, 9223372036854775815},
-		{64, true, 1, 1},
-		{64, false, 1, 0},
-		{1, false, 0, 9223372036854775813},
+		{7, true, 0, 135},
+		{8, true, 1, 1},
+		{8, false, 1, 0},
+		{1, false, 0, 133},
 	}
 	for n, test := range tests {
 		m.Set(test.position, test.value)
