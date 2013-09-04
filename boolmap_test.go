@@ -29,3 +29,27 @@ func TestBoolMap(t *testing.T) {
 		}
 	}
 }
+
+func TestBoolSlice(t *testing.T) {
+	s := NewSlice()
+	tests := []struct {
+		position      uint
+		value         bool
+		slicePosition uint
+		mapValue      byte
+	}{
+		{0, true, 0, 1},
+		{1, true, 0, 3},
+		{2, true, 0, 7},
+		{7, true, 0, 135},
+		{8, true, 1, 1},
+		{8, false, 1, 0},
+		{1, false, 0, 133},
+	}
+	for n, test := range tests {
+		s.Set(test.position, test.value)
+		if s.data[test.slicePosition] != test.mapValue {
+			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, s.data[test.slicePosition])
+		}
+	}
+}
