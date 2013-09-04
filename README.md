@@ -2,7 +2,7 @@
 --
     import "github.com/MJKWoolnough/boolmap"
 
-boolmap creates a map of bools using uint64s for efficiency (needs benchmarking for memory)
+boolmap creates a map of bools using bytes for efficiency (needs benchmarking for memory)
 
 ## Usage
 
@@ -20,14 +20,40 @@ type Map struct {
 func NewMap() Map
 ```
 
-#### func (Map) Get
+#### func (*Map) Get
 
 ```go
-func (m Map) Get(p uint64) bool
+func (m *Map) Get(p uint) bool
 ```
 
-#### func (Map) Set
+#### func (*Map) Set
 
 ```go
-func (m Map) Set(p uint64, d bool)
+func (m *Map) Set(p uint, d bool)
+```
+
+#### type Slice
+
+```go
+type Slice struct {
+}
+```
+
+
+#### func  NewSlice
+
+```go
+func NewSlice() Slice
+```
+
+#### func (*Slice) Get
+
+```go
+func (s *Slice) Get(p uint) bool
+```
+
+#### func (*Slice) Set
+
+```go
+func (s *Slice) Set(p uint, d bool)
 ```
