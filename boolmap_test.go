@@ -5,9 +5,9 @@ import "testing"
 func TestBoolMap(t *testing.T) {
 	m := NewMap()
 	tests := []struct {
-		position    uint
+		position    uint64
 		value       bool
-		mapPosition uint
+		mapPosition uint64
 		mapValue    byte
 	}{
 		{0, true, 0, 1},

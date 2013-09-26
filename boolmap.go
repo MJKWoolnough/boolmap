@@ -2,22 +2,22 @@
 package boolmap
 
 type Map struct {
-	data map[uint]byte
+	data map[uint64]byte
 }
 
 func NewMap() Map {
-	return Map{make(map[uint]byte)}
+	return Map{make(map[uint64]byte)}
 }
 
-func (m *Map) Get(p uint) bool {
-	return m.data[p>>3]&(1<<(p&7)) > 0
+func (m *Map) Get(p uint64) bool {
+	return m.data[p>>3]&(1<<(p&7)) != 0
 }
 
-func (m *Map) Set(p uint, d bool) {
+func (m *Map) Set(p uint64, d bool) {
 	if d {
 		m.data[p>>3] |= 1 << (p & 7)
 	} else {
-		m.data[p>>3] &= 0xFF ^ (1 << (p & 7))
+		m.data[p>>3] &^= 1 << (p & 7)
 	}
 	if m.data[p>>3] == 0 {
 		delete(m.data, p>>3)
@@ -37,7 +37,7 @@ func (s *Slice) Get(p uint) bool {
 	if pos > uint(len(s.data)) {
 		return false
 	}
-	return s.data[pos]&(1<<(p&7)) > 0
+	return s.data[pos]&(1<<(p&7)) != 0
 }
 
 func (s *Slice) Set(p uint, d bool) {
@@ -59,6 +59,6 @@ func (s *Slice) Set(p uint, d bool) {
 	if d {
 		s.data[pos] |= 1 << (p & 7)
 	} else {
-		s.data[pos] &= 0xFF ^ (1 << (p & 7))
+		s.data[pos] &^= 1 << (p & 7)
 	}
 }
