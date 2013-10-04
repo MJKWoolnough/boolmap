@@ -14,13 +14,15 @@ func (m *Map) Get(p uint64) bool {
 }
 
 func (m *Map) Set(p uint64, d bool) {
+	shift := byte(1 << (p & 7))
+	pos := p >> 3
 	if d {
-		m.data[p>>3] |= 1 << (p & 7)
+		m.data[pos] |= shift
 	} else {
-		m.data[p>>3] &^= 1 << (p & 7)
+		m.data[pos] &^= shift
 	}
-	if m.data[p>>3] == 0 {
-		delete(m.data, p>>3)
+	if m.data[pos] == 0 {
+		delete(m.data, pos)
 	}
 }
 
@@ -56,9 +58,10 @@ func (s *Slice) Set(p uint, d bool) {
 			s.data = newData
 		}
 	}
+	shift := byte(1 << (p & 7))
 	if d {
-		s.data[pos] |= 1 << (p & 7)
+		s.data[pos] |= shift
 	} else {
-		s.data[pos] &^= 1 << (p & 7)
+		s.data[pos] &^= shift
 	}
 }
