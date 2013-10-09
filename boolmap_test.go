@@ -53,3 +53,27 @@ func TestBoolSlice(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkBoolMap(b *testing.B) {
+	m := NewMap()
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m.Set(i, true)
+		}
+		for i := uint64(0); i < 100; i++ {
+			m.Set(i, false)
+		}
+	}
+}
+
+func BenchmarkNonBoolMap(b *testing.B) {
+	m := make(map[uint64]bool)
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m[i] = true
+		}
+		for i := uint64(0); i < 100; i++ {
+			m[i] = false
+		}
+	}
+}
