@@ -16,13 +16,22 @@ func (m *Map) Get(p uint64) bool {
 func (m *Map) Set(p uint64, d bool) {
 	shift := byte(1 << (p & 7))
 	pos := p >> 3
-	if d {
-		m.data[pos] |= shift
-	} else {
-		m.data[pos] &^= shift
+	var (
+		c  byte
+		ok bool
+	)
+	if c, ok = m.data[pos]; !ok && !d {
+		return
 	}
-	if m.data[pos] == 0 {
+	if d {
+		c |= shift
+	} else {
+		c &^= shift
+	}
+	if c == 0 {
 		delete(m.data, pos)
+	} else {
+		m.data[pos] = c
 	}
 }
 
