@@ -9,11 +9,33 @@ func NewCrumbMap() *CrumbMap {
 }
 
 func (c *CrumbMap) Get(p uint64) byte {
-	return (c.data[p>>2] >> ((p & 3) << 1)) & 3
+	d := c.data[p>>2]
+	switch p & 3 {
+	case 1:
+		d >>= 2
+	case 2:
+		d >>= 4
+	case 3:
+		d >>= 6
+	}
+	return d & 3
 }
 
 func (c *CrumbMap) Set(p uint64, d byte) {
-	c.data[p>>2] &= 255 & (d & 3 << ((p & 3) << 1))
+	pos := p >> 2
+	d &= 3
+	oldData := c.data[pos]
+	switch p & 3 {
+	case 0:
+		d = oldData&252 | d
+	case 1:
+		d = oldData&243 | d<<2
+	case 2:
+		d = oldData&207 | d<<4
+	case 3:
+		d = oldData&63 | d<<6
+	}
+	c.data[pos] = d
 }
 
 type CrumbSlice struct {
@@ -33,7 +55,16 @@ func (c *CrumbSlice) Get(p uint) byte {
 	if pos > uint(len(c.data)) {
 		return 0
 	}
-	return (c.data[pos] >> ((p & 3) << 1)) & 3
+	d := c.data[pos]
+	switch p & 3 {
+	case 1:
+		d >>= 2
+	case 2:
+		d >>= 4
+	case 3:
+		d >>= 6
+	}
+	return d & 3
 }
 
 func (c *CrumbSlice) Set(p uint, d byte) {
@@ -52,5 +83,17 @@ func (c *CrumbSlice) Set(p uint, d byte) {
 			c.data = newData
 		}
 	}
-	c.data[p>>2] &= 255 & (d & 3 << ((p & 3) << 1))
+	d &= 3
+	oldData := c.data[pos]
+	switch p & 3 {
+	case 0:
+		d = oldData&252 | d
+	case 1:
+		d = oldData&243 | d<<2
+	case 2:
+		d = oldData&207 | d<<4
+	case 3:
+		d = oldData&63 | d<<6
+	}
+	c.data[pos] = d
 }
