@@ -69,3 +69,21 @@ func TestNibbleSlice(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkNibbleMap(b *testing.B) {
+	m := NewNibbleMap()
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m.Set(i, byte(i&15))
+		}
+	}
+}
+
+func BenchmarkNonNibbleMap(b *testing.B) {
+	m := make(map[uint64]byte)
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m[i] = byte(i & 15)
+		}
+	}
+}

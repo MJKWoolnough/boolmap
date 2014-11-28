@@ -77,3 +77,21 @@ func TestCrumbSlice(t *testing.T) {
 		}
 	}
 }
+
+func BenchmarkCrumbMap(b *testing.B) {
+	m := NewCrumbMap()
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m.Set(i, byte(i&3))
+		}
+	}
+}
+
+func BenchmarkNonCrumbMap(b *testing.B) {
+	m := make(map[uint64]byte)
+	for n := 0; n < b.N; n++ {
+		for i := uint64(0); i < 100; i++ {
+			m[i] = byte(i & 3)
+		}
+	}
+}
