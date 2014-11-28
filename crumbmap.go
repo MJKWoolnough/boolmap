@@ -1,13 +1,16 @@
 package boolmap
 
+// CrumbMap is a map of Crumbs (2-bits, values 0, 1, 2, 3)
 type CrumbMap struct {
 	data map[uint64]byte
 }
 
+// NewCrumbMap returns a new, initialised, CrumbMap
 func NewCrumbMap() *CrumbMap {
 	return &CrumbMap{make(map[uint64]byte)}
 }
 
+// Get returns a crumb from the given position
 func (c *CrumbMap) Get(p uint64) byte {
 	d := c.data[p>>2]
 	switch p & 3 {
@@ -21,6 +24,7 @@ func (c *CrumbMap) Get(p uint64) byte {
 	return d & 3
 }
 
+// Set sets the crumb at the given position
 func (c *CrumbMap) Set(p uint64, d byte) {
 	pos := p >> 2
 	d &= 3
@@ -45,18 +49,22 @@ func (c *CrumbMap) Set(p uint64, d byte) {
 	}
 }
 
+// CrumbSlice is a slice of bytes, representing crumbs (2-bits)
 type CrumbSlice struct {
 	data []byte
 }
 
+// NewCrumbSlice returns a new, initialised, CrumbSlice
 func NewCrumbSlice() *CrumbSlice {
 	return &CrumbSlice{make([]byte, 1)}
 }
 
+// NewCrumbSliceSize returns a new Crumbslice, initialised to the given size
 func NewCrumbSliceSize(size uint) *CrumbSlice {
 	return &CrumbSlice{make([]byte, size)}
 }
 
+// Get returns a crumb from the given position
 func (c *CrumbSlice) Get(p uint) byte {
 	pos := p >> 2
 	if pos >= uint(len(c.data)) {
@@ -74,6 +82,7 @@ func (c *CrumbSlice) Get(p uint) byte {
 	return d & 3
 }
 
+// Set sets the crumb at the given position
 func (c *CrumbSlice) Set(p uint, d byte) {
 	pos := p >> 2
 	if pos >= uint(len(c.data)) {

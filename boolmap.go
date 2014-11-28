@@ -49,6 +49,7 @@ func NewSlice() *Slice {
 	return &Slice{make([]byte, 1)}
 }
 
+// NewSliceSize returns a new Slice, intitialised to the size given
 func NewSliceSize(size uint) *Slice {
 	return &Slice{make([]byte, size)}
 }

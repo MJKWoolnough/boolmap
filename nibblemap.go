@@ -1,13 +1,16 @@
 package boolmap
 
+// NibbleMap is a map of Nibbles (4-bits, values 0-15)
 type NibbleMap struct {
 	data map[uint64]byte
 }
 
+// NewNibbleMap return a new, initialised, NibbleMap
 func NewNibbleMap() *NibbleMap {
 	return &NibbleMap{make(map[uint64]byte)}
 }
 
+// Get returns a crumb from the given position
 func (n *NibbleMap) Get(p uint64) byte {
 	d := n.data[p>>1]
 	if p&1 == 0 {
@@ -16,6 +19,7 @@ func (n *NibbleMap) Get(p uint64) byte {
 	return d >> 4
 }
 
+// Set sets the crumb at the given position
 func (n *NibbleMap) Set(p uint64, d byte) {
 	pos := p >> 1
 	oldData, ok := n.data[pos]
@@ -34,18 +38,22 @@ func (n *NibbleMap) Set(p uint64, d byte) {
 	}
 }
 
+// NibbleSlice is a slice of bytes representing nibbles (4-bits)
 type NibbleSlice struct {
 	data []byte
 }
 
+// NewNibbleSlice returns a new, initialised, CrumbSlice
 func NewNibbleSlice() *NibbleSlice {
 	return &NibbleSlice{make([]byte, 1)}
 }
 
+// NewNibbleSliceSize returns a new Crumbslice, initialised to the given size
 func NewNibbleSliceSize(size uint) *NibbleSlice {
 	return &NibbleSlice{make([]byte, size)}
 }
 
+// Get returns a crumb from the given position
 func (n *NibbleSlice) Get(p uint) byte {
 	pos := p >> 1
 	if pos >= uint(len(n.data)) {
@@ -58,6 +66,7 @@ func (n *NibbleSlice) Get(p uint) byte {
 	return d >> 4
 }
 
+// Set sets the crumb at the given position
 func (n *NibbleSlice) Set(p uint, d byte) {
 	pos := p >> 1
 	if pos >= uint(len(n.data)) {
