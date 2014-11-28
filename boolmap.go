@@ -49,6 +49,10 @@ func NewSlice() *Slice {
 	return &Slice{make([]byte, 1)}
 }
 
+func NewSliceSize(size uint) *Slice {
+	return &Slice{make([]byte, size)}
+}
+
 // Get returns a bool for the specified position
 func (s *Slice) Get(p uint) bool {
 	pos := p >> 3
@@ -62,8 +66,11 @@ func (s *Slice) Get(p uint) bool {
 func (s *Slice) Set(p uint, d bool) {
 	pos := p >> 3
 	if pos >= uint(len(s.data)) {
+		if !d {
+			return
+		}
 		if pos < uint(cap(s.data)) {
-			s.data = s.data[:pos]
+			s.data = s.data[:cap(s.data)]
 		} else {
 			var newData []byte
 			if pos < 512 {
