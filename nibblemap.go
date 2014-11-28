@@ -13,18 +13,18 @@ func (n *NibbleMap) Get(p uint64) byte {
 	if p&1 == 0 {
 		return d & 15
 	}
-	return d >> 2 & 15
+	return d >> 4
 }
 
 func (n *NibbleMap) Set(p uint64, d byte) {
-	d &= 15
-	if p&1 == 1 {
-		d <<= 2
-		d |= 15
+	pos := p >> 1
+	oldData := n.data[pos]
+	if p&1 == 0 {
+		d = oldData&240 | d&15
 	} else {
-		d |= 240
+		d = oldData&15 | d<<4
 	}
-	n.data[p>>1] &= d
+	n.data[pos] = d
 }
 
 type NibbleSlice struct {
@@ -48,17 +48,10 @@ func (n *NibbleSlice) Get(p uint) byte {
 	if p&1 == 0 {
 		return d & 15
 	}
-	return d >> 2 & 15
+	return d >> 4
 }
 
 func (n *NibbleSlice) Set(p uint, d byte) {
-	d &= 15
-	if p&1 == 1 {
-		d <<= 2
-		d |= 15
-	} else {
-		d |= 240
-	}
 	pos := p >> 1
 	if pos >= uint(len(n.data)) {
 		if pos < uint(cap(n.data)) {
@@ -74,5 +67,11 @@ func (n *NibbleSlice) Set(p uint, d byte) {
 			n.data = newData
 		}
 	}
-	n.data[pos] &= d
+	oldData := n.data[pos]
+	if p&1 == 0 {
+		d = oldData&240 | d&15
+	} else {
+		d = oldData&15 | d<<4
+	}
+	n.data[pos] = d
 }
