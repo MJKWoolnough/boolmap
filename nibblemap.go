@@ -18,13 +18,20 @@ func (n *NibbleMap) Get(p uint64) byte {
 
 func (n *NibbleMap) Set(p uint64, d byte) {
 	pos := p >> 1
-	oldData := n.data[pos]
+	oldData, ok := n.data[pos]
+	if !ok && d == 0 {
+		return
+	}
 	if p&1 == 0 {
 		d = oldData&240 | d&15
 	} else {
 		d = oldData&15 | d<<4
 	}
-	n.data[pos] = d
+	if d == 0 {
+		delete(n.data, pos)
+	} else {
+		n.data[pos] = d
+	}
 }
 
 type NibbleSlice struct {
@@ -41,7 +48,7 @@ func NewNibbleSliceSize(size uint) *NibbleSlice {
 
 func (n *NibbleSlice) Get(p uint) byte {
 	pos := p >> 1
-	if pos > uint(len(n.data)) {
+	if pos >= uint(len(n.data)) {
 		return 0
 	}
 	d := n.data[pos]
@@ -54,6 +61,9 @@ func (n *NibbleSlice) Get(p uint) byte {
 func (n *NibbleSlice) Set(p uint, d byte) {
 	pos := p >> 1
 	if pos >= uint(len(n.data)) {
+		if d == 0 {
+			return
+		}
 		if pos < uint(cap(n.data)) {
 			n.data = n.data[:cap(n.data)]
 		} else {

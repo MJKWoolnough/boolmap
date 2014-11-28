@@ -24,7 +24,10 @@ func (c *CrumbMap) Get(p uint64) byte {
 func (c *CrumbMap) Set(p uint64, d byte) {
 	pos := p >> 2
 	d &= 3
-	oldData := c.data[pos]
+	oldData, ok := c.data[pos]
+	if !ok && d == 0 {
+		return
+	}
 	switch p & 3 {
 	case 0:
 		d = oldData&252 | d
@@ -35,7 +38,11 @@ func (c *CrumbMap) Set(p uint64, d byte) {
 	case 3:
 		d = oldData&63 | d<<6
 	}
-	c.data[pos] = d
+	if d == 0 {
+		delete(c.data, pos)
+	} else {
+		c.data[pos] = d
+	}
 }
 
 type CrumbSlice struct {
@@ -52,7 +59,7 @@ func NewCrumbSliceSize(size uint) *CrumbSlice {
 
 func (c *CrumbSlice) Get(p uint) byte {
 	pos := p >> 2
-	if pos > uint(len(c.data)) {
+	if pos >= uint(len(c.data)) {
 		return 0
 	}
 	d := c.data[pos]
@@ -70,6 +77,9 @@ func (c *CrumbSlice) Get(p uint) byte {
 func (c *CrumbSlice) Set(p uint, d byte) {
 	pos := p >> 2
 	if pos >= uint(len(c.data)) {
+		if d == 0 {
+			return
+		}
 		if pos < uint(cap(c.data)) {
 			c.data = c.data[:cap(c.data)]
 		} else {
