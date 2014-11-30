@@ -2,6 +2,11 @@ package boolmap
 
 import "testing"
 
+var (
+	_ testMap   = &NibbleMap{}
+	_ testSlice = &NibbleSlice{}
+)
+
 func TestNibbleMap(t *testing.T) {
 	tests := []struct {
 		val    byte

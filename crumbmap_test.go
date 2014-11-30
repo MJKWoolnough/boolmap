@@ -2,6 +2,11 @@ package boolmap
 
 import "testing"
 
+var (
+	_ testMap   = &CrumbMap{}
+	_ testSlice = &CrumbSlice{}
+)
+
 func TestCrumbMap(t *testing.T) {
 	tests := []struct {
 		val    byte

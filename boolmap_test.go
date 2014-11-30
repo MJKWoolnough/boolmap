@@ -2,6 +2,21 @@ package boolmap
 
 import "testing"
 
+type testMap interface {
+	Get(p uint64) byte
+	Set(p uint64, d byte)
+}
+
+type testSlice interface {
+	Get(p uint) byte
+	Set(p uint, d byte)
+}
+
+var (
+	_ testMap   = &Map{}
+	_ testSlice = &Slice{}
+)
+
 func TestBoolMap(t *testing.T) {
 	m := NewMap()
 	tests := []struct {
@@ -19,7 +34,7 @@ func TestBoolMap(t *testing.T) {
 		{1, false, 0, 133},
 	}
 	for n, test := range tests {
-		m.Set(test.position, test.value)
+		m.SetBool(test.position, test.value)
 		if m.data[test.mapPosition] != test.mapValue {
 			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, m.data[test.mapPosition])
 		} else if test.mapValue == 0 {
@@ -47,7 +62,7 @@ func TestBoolSlice(t *testing.T) {
 		{1, false, 0, 133},
 	}
 	for n, test := range tests {
-		s.Set(test.position, test.value)
+		s.SetBool(test.position, test.value)
 		if s.data[test.slicePosition] != test.mapValue {
 			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, s.data[test.slicePosition])
 		}
@@ -58,7 +73,7 @@ func BenchmarkBoolMap(b *testing.B) {
 	m := NewMap()
 	for n := 0; n < b.N; n++ {
 		for i := uint64(0); i < 100; i++ {
-			m.Set(i, true)
+			m.SetBool(i, true)
 		}
 	}
 }

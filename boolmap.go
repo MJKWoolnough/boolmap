@@ -11,13 +11,26 @@ func NewMap() Map {
 	return Map{make(map[uint64]byte)}
 }
 
-// Get returns a bool for the specified position
-func (m *Map) Get(p uint64) bool {
+// Get returns a bool, represented by a byte, for the specified position
+func (m *Map) Get(p uint64) byte {
+	if m.GetBool(p) {
+		return 1
+	}
+	return 0
+}
+
+// GetBool returns a bool for the specified position
+func (m *Map) GetBool(p uint64) bool {
 	return m.data[p>>3]&(1<<(p&7)) != 0
 }
 
-// Set sets a bool at the specified position
-func (m *Map) Set(p uint64, d bool) {
+// Set setsa a bool, represented by a byte, at the specified position
+func (m *Map) Set(p uint64, d byte) {
+	m.SetBool(p, d != 0)
+}
+
+// SetBool sets a bool at the specified position
+func (m *Map) SetBool(p uint64, d bool) {
 	shift := byte(1 << (p & 7))
 	pos := p >> 3
 	var (
@@ -58,8 +71,16 @@ func NewSliceSize(size uint) *Slice {
 	return &Slice{make([]byte, sliceSize)}
 }
 
-// Get returns a bool for the specified position
-func (s *Slice) Get(p uint) bool {
+// Get returns a byte, representing a bool, at the specified position
+func (s *Slice) Get(p uint) byte {
+	if s.GetBool(p) {
+		return 1
+	}
+	return 0
+}
+
+// GetBool returns a bool for the specified position
+func (s *Slice) GetBool(p uint) bool {
 	pos := p >> 3
 	if pos > uint(len(s.data)) {
 		return false
@@ -67,8 +88,13 @@ func (s *Slice) Get(p uint) bool {
 	return s.data[pos]&(1<<(p&7)) != 0
 }
 
-// Set sets a bool at the specified position
-func (s *Slice) Set(p uint, d bool) {
+// Set sets a bool, given as a byte, at the specified position
+func (s *Slice) Set(p uint, d byte) {
+	s.SetBool(p, d != 0)
+}
+
+// SetBool sets a bool at the specified position
+func (s *Slice) SetBool(p uint, d bool) {
 	pos := p >> 3
 	if pos >= uint(len(s.data)) {
 		if !d {
