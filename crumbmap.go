@@ -61,7 +61,11 @@ func NewCrumbSlice() *CrumbSlice {
 
 // NewCrumbSliceSize returns a new Crumbslice, initialised to the given size
 func NewCrumbSliceSize(size uint) *CrumbSlice {
-	return &CrumbSlice{make([]byte, size)}
+	sliceSize := size >> 2
+	if size&3 != 0 {
+		sliceSize++
+	}
+	return &CrumbSlice{make([]byte, sliceSize)}
 }
 
 // Get returns a crumb from the given position

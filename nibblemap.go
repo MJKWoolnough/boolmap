@@ -50,7 +50,11 @@ func NewNibbleSlice() *NibbleSlice {
 
 // NewNibbleSliceSize returns a new Crumbslice, initialised to the given size
 func NewNibbleSliceSize(size uint) *NibbleSlice {
-	return &NibbleSlice{make([]byte, size)}
+	sliceSize := size >> 1
+	if size&1 != 0 {
+		sliceSize++
+	}
+	return &NibbleSlice{make([]byte, sliceSize)}
 }
 
 // Get returns a crumb from the given position

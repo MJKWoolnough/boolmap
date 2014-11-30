@@ -51,7 +51,11 @@ func NewSlice() *Slice {
 
 // NewSliceSize returns a new Slice, intitialised to the size given
 func NewSliceSize(size uint) *Slice {
-	return &Slice{make([]byte, size)}
+	sliceSize := size >> 3
+	if size&7 != 0 {
+		sliceSize++
+	}
+	return &Slice{make([]byte, sliceSize)}
 }
 
 // Get returns a bool for the specified position
