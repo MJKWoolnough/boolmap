@@ -24,7 +24,7 @@ func (m *Map) GetBool(p uint64) bool {
 	return m.data[p>>3]&(1<<(p&7)) != 0
 }
 
-// Set setsa a bool, represented by a byte, at the specified position
+// Set sets a bool, represented by a byte, at the specified position
 func (m *Map) Set(p uint64, d byte) {
 	m.SetBool(p, d != 0)
 }
