@@ -2,7 +2,8 @@
 --
     import "github.com/MJKWoolnough/boolmap"
 
-Package boolmap creates a map of bools using bytes for efficiency (needs benchmarking for memory)
+Package boolmap creates a map of bools using bytes for efficiency (needs
+benchmarking for memory)
 
 ## Usage
 
@@ -108,7 +109,7 @@ GetBool returns a bool for the specified position
 ```go
 func (m *Map) Set(p uint64, d byte)
 ```
-Set setsa a bool, represented by a byte, at the specified position
+Set sets a bool, represented by a byte, at the specified position
 
 #### func (*Map) SetBool
 
