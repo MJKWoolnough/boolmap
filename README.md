@@ -169,7 +169,7 @@ NewNibbleSlice returns a new, initialised, CrumbSlice
 ```go
 func NewNibbleSliceSize(size uint) *NibbleSlice
 ```
-NewNibbleSliceSize returns a new Crumbslice, initialised to the given size
+NewNibbleSliceSize returns a new NibbleSlice, initialised to the given size
 
 #### func (*NibbleSlice) Get
 

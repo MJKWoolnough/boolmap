@@ -48,7 +48,7 @@ func NewNibbleSlice() *NibbleSlice {
 	return &NibbleSlice{make([]byte, 1)}
 }
 
-// NewNibbleSliceSize returns a new Crumbslice, initialised to the given size
+// NewNibbleSliceSize returns a new NibbleSlice, initialised to the given size
 func NewNibbleSliceSize(size uint) *NibbleSlice {
 	sliceSize := size >> 1
 	if size&1 != 0 {
