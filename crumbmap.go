@@ -1,18 +1,16 @@
 package boolmap
 
 // CrumbMap is a map of Crumbs (2-bits, values 0, 1, 2, 3)
-type CrumbMap struct {
-	data map[uint64]byte
-}
+type CrumbMap map[uint64]byte
 
 // NewCrumbMap returns a new, initialised, CrumbMap
-func NewCrumbMap() *CrumbMap {
-	return &CrumbMap{make(map[uint64]byte)}
+func NewCrumbMap() CrumbMap {
+	return make(CrumbMap)
 }
 
 // Get returns a crumb from the given position
-func (c *CrumbMap) Get(p uint64) byte {
-	d := c.data[p>>2]
+func (c CrumbMap) Get(p uint64) byte {
+	d := c[p>>2]
 	switch p & 3 {
 	case 1:
 		d >>= 2
@@ -25,10 +23,10 @@ func (c *CrumbMap) Get(p uint64) byte {
 }
 
 // Set sets the crumb at the given position
-func (c *CrumbMap) Set(p uint64, d byte) {
+func (c CrumbMap) Set(p uint64, d byte) {
 	pos := p >> 2
 	d &= 3
-	oldData, ok := c.data[pos]
+	oldData, ok := c[pos]
 	if !ok && d == 0 {
 		return
 	}
@@ -43,20 +41,18 @@ func (c *CrumbMap) Set(p uint64, d byte) {
 		d = oldData&63 | d<<6
 	}
 	if d == 0 {
-		delete(c.data, pos)
+		delete(c, pos)
 	} else {
-		c.data[pos] = d
+		c[pos] = d
 	}
 }
 
 // CrumbSlice is a slice of bytes, representing crumbs (2-bits)
-type CrumbSlice struct {
-	data []byte
-}
+type CrumbSlice []byte
 
 // NewCrumbSlice returns a new, initialised, CrumbSlice
 func NewCrumbSlice() *CrumbSlice {
-	return &CrumbSlice{make([]byte, 1)}
+	return NewCrumbSliceSize(1)
 }
 
 // NewCrumbSliceSize returns a new Crumbslice, initialised to the given size
@@ -65,16 +61,17 @@ func NewCrumbSliceSize(size uint) *CrumbSlice {
 	if size&3 != 0 {
 		sliceSize++
 	}
-	return &CrumbSlice{make([]byte, sliceSize)}
+	c := make(CrumbSlice, sliceSize)
+	return &c
 }
 
 // Get returns a crumb from the given position
 func (c *CrumbSlice) Get(p uint) byte {
 	pos := p >> 2
-	if pos >= uint(len(c.data)) {
+	if pos >= uint(len(*c)) {
 		return 0
 	}
-	d := c.data[pos]
+	d := (*c)[pos]
 	switch p & 3 {
 	case 1:
 		d >>= 2
@@ -89,25 +86,25 @@ func (c *CrumbSlice) Get(p uint) byte {
 // Set sets the crumb at the given position
 func (c *CrumbSlice) Set(p uint, d byte) {
 	pos := p >> 2
-	if pos >= uint(len(c.data)) {
+	if pos >= uint(len(*c)) {
 		if d == 0 {
 			return
 		}
-		if pos < uint(cap(c.data)) {
-			c.data = c.data[:cap(c.data)]
+		if pos < uint(cap(*c)) {
+			(*c) = (*c)[:cap(*c)]
 		} else {
-			var newData []byte
+			var newData CrumbSlice
 			if pos < 512 {
-				newData = make([]byte, pos<<1)
+				newData = make(CrumbSlice, pos<<1)
 			} else {
-				newData = make([]byte, pos+(pos>>2))
+				newData = make(CrumbSlice, pos+(pos>>2))
 			}
-			copy(newData, c.data)
-			c.data = newData
+			copy(newData, *c)
+			*c = newData
 		}
 	}
 	d &= 3
-	oldData := c.data[pos]
+	oldData := (*c)[pos]
 	switch p & 3 {
 	case 0:
 		d = oldData&252 | d
@@ -118,5 +115,5 @@ func (c *CrumbSlice) Set(p uint, d byte) {
 	case 3:
 		d = oldData&63 | d<<6
 	}
-	c.data[pos] = d
+	(*c)[pos] = d
 }

@@ -35,10 +35,10 @@ func TestBoolMap(t *testing.T) {
 	}
 	for n, test := range tests {
 		m.SetBool(test.position, test.value)
-		if m.data[test.mapPosition] != test.mapValue {
-			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, m.data[test.mapPosition])
+		if m[test.mapPosition] != test.mapValue {
+			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, m[test.mapPosition])
 		} else if test.mapValue == 0 {
-			if _, ok := m.data[test.mapPosition]; ok {
+			if _, ok := m[test.mapPosition]; ok {
 				t.Errorf("test %d: map entry should have been removed on a zero value", n+1)
 			}
 		}
@@ -63,8 +63,8 @@ func TestBoolSlice(t *testing.T) {
 	}
 	for n, test := range tests {
 		s.SetBool(test.position, test.value)
-		if s.data[test.slicePosition] != test.mapValue {
-			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, s.data[test.slicePosition])
+		if (*s)[test.slicePosition] != test.mapValue {
+			t.Errorf("test %d: expecting value %d, got %d", n+1, test.mapValue, (*s)[test.slicePosition])
 		}
 	}
 }
