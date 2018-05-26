@@ -31,11 +31,8 @@ func (m Map) Set(p uint64, d byte) {
 func (m Map) SetBool(p uint64, d bool) {
 	shift := byte(1 << (p & 7))
 	pos := p >> 3
-	var (
-		c  byte
-		ok bool
-	)
-	if c, ok = m[pos]; !ok && !d {
+	c, ok := m[pos]
+	if !ok && !d {
 		return
 	}
 	if d {
