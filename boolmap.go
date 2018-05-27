@@ -66,7 +66,7 @@ func NewSliceSize(size uint) *Slice {
 }
 
 // Get returns a byte, representing a bool, at the specified position
-func (s *Slice) Get(p uint) byte {
+func (s Slice) Get(p uint) byte {
 	if s.GetBool(p) {
 		return 1
 	}
@@ -74,12 +74,12 @@ func (s *Slice) Get(p uint) byte {
 }
 
 // GetBool returns a bool for the specified position
-func (s *Slice) GetBool(p uint) bool {
+func (s Slice) GetBool(p uint) bool {
 	pos := p >> 3
-	if pos > uint(len(*s)) {
+	if pos > uint(len(s)) {
 		return false
 	}
-	return (*s)[pos]&(1<<(p&7)) != 0
+	return s[pos]&(1<<(p&7)) != 0
 }
 
 // Set sets a bool, given as a byte, at the specified position

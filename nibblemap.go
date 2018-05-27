@@ -54,12 +54,12 @@ func NewNibbleSliceSize(size uint) NibbleSlice {
 }
 
 // Get returns a crumb from the given position
-func (n *NibbleSlice) Get(p uint) byte {
+func (n NibbleSlice) Get(p uint) byte {
 	pos := p >> 1
-	if pos >= uint(len(*n)) {
+	if pos >= uint(len(n)) {
 		return 0
 	}
-	d := (*n)[pos]
+	d := n[pos]
 	if p&1 == 0 {
 		return d & 15
 	}

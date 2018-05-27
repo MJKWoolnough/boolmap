@@ -66,12 +66,12 @@ func NewCrumbSliceSize(size uint) *CrumbSlice {
 }
 
 // Get returns a crumb from the given position
-func (c *CrumbSlice) Get(p uint) byte {
+func (c CrumbSlice) Get(p uint) byte {
 	pos := p >> 2
-	if pos >= uint(len(*c)) {
+	if pos >= uint(len(c)) {
 		return 0
 	}
-	d := (*c)[pos]
+	d := c[pos]
 	switch p & 3 {
 	case 1:
 		d >>= 2
