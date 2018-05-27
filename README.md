@@ -58,10 +58,10 @@ func NewCrumbSliceSize(size uint) *CrumbSlice
 ```
 NewCrumbSliceSize returns a new Crumbslice, initialised to the given size
 
-#### func (*CrumbSlice) Get
+#### func (CrumbSlice) Get
 
 ```go
-func (c *CrumbSlice) Get(p uint) byte
+func (c CrumbSlice) Get(p uint) byte
 ```
 Get returns a crumb from the given position
 
@@ -166,10 +166,10 @@ func NewNibbleSliceSize(size uint) NibbleSlice
 ```
 NewNibbleSliceSize returns a new NibbleSlice, initialised to the given size
 
-#### func (*NibbleSlice) Get
+#### func (NibbleSlice) Get
 
 ```go
-func (n *NibbleSlice) Get(p uint) byte
+func (n NibbleSlice) Get(p uint) byte
 ```
 Get returns a crumb from the given position
 
@@ -202,17 +202,17 @@ func NewSliceSize(size uint) *Slice
 ```
 NewSliceSize returns a new Slice, intitialised to the size given
 
-#### func (*Slice) Get
+#### func (Slice) Get
 
 ```go
-func (s *Slice) Get(p uint) byte
+func (s Slice) Get(p uint) byte
 ```
 Get returns a byte, representing a bool, at the specified position
 
-#### func (*Slice) GetBool
+#### func (Slice) GetBool
 
 ```go
-func (s *Slice) GetBool(p uint) bool
+func (s Slice) GetBool(p uint) bool
 ```
 GetBool returns a bool for the specified position
 
