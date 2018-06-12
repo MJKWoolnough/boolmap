@@ -1,5 +1,5 @@
 // Package boolmap creates a map of bools using bytes for efficiency (needs benchmarking for memory)
-package boolmap
+package boolmap // import "vimagination.zapto.org/boolmap"
 
 // Map is the default boolmap
 type Map map[uint64]byte
