@@ -1,6 +1,6 @@
 # boolmap
 --
-    import "github.com/MJKWoolnough/boolmap"
+    import "vimagination.zapto.org/boolmap"
 
 Package boolmap creates a map of bools using bytes for efficiency (needs
 benchmarking for memory)
