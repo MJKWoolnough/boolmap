@@ -54,12 +54,12 @@ func (m Map) SetBool(p uint64, d bool) {
 // Slice is a slice of bytes representing bools.
 type Slice []byte
 
-// NewSlice returnns a new, initialised Slice.
+// NewSlice returns a new, initialised Slice.
 func NewSlice() *Slice {
 	return NewSliceSize(1)
 }
 
-// NewSliceSize returns a new Slice, intitialised to the size given.
+// NewSliceSize returns a new Slice, initialised to the size given.
 func NewSliceSize(size uint) *Slice {
 	sliceSize := size >> 3
 
